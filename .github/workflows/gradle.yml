@@ -63,7 +63,7 @@ jobs:
     - name: Prepare and configure TCKs with Gradle (but don't run it all)
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: prepareTckTask
+        arguments: prepareTckTask --scan
 
     - name: Run a single TCK test
       run: |
