@@ -108,20 +108,19 @@ object G : ProjectDelegate() {
 
     val jmsClient: Client
         get() = when (findProperty("jmsClient")) {
-            "mrgm" -> QpidJmsClient()
-            "enmasse" -> EnmasseQpidJmsClient()
-            "owire" -> ActiveMQClient()
-            "jamq" -> ArtemisCoreJmsClient()
-            else -> throw InvalidUserDataException("jmsClient must be `mrgm`, `owire`, `enmasse` or `jamq` (see source for what it stands for)")
+            "qpid-jms" -> QpidJmsClient()
+            "amqps-qpid-jms" -> AmqpsQpidJmsClient()
+            "activemq-client" -> ActiveMQClient()
+            "artemis-jms-client" -> ArtemisCoreJmsClient()
+            else -> throw InvalidUserDataException("jmsClient must be `qpid-jms`, `activemq-client`, `amqps-qpid-jms` or `artemis-jms-client`")
         }
 
 
     val jmsBroker: Broker
         get() = when (findProperty("jmsBroker")) {
-            "artem", "JAMQ7" -> AMQ7Broker()
-            "JAMQ6" -> AMQ6Broker()
-            "MRGM" -> throw NotImplementedError("jmsBroker=MRGM is not implemented yet")
-            else -> throw InvalidUserDataException("jmsBroker must be `artem`, `JAMQ6` or `JAMQ7`, was ${findProperty("jmsBroker")}")
+            "activemq-artemis" -> ArtemisBroker()
+            "activemq" -> ActiveMqBroker()
+            else -> throw InvalidUserDataException("jmsBroker must be `activemq-artemis` or `activemq`, was ${findProperty("jmsBroker")}")
         }
 
     val host: String

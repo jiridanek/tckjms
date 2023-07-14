@@ -26,13 +26,13 @@ abstract class Broker {
     open val amqxOpts = ""
 }
 
-class AMQ6Broker : Broker() {
+class ActiveMqBroker : Broker() {
     override val amqxQueueObject = "queue"
     override val amqxTopicObject = "jmstopic"
     override val amqxOpts = "--broker-type activemq"
 }
 
-class AMQ7Broker : Broker() {
+class ArtemisBroker : Broker() {
     override val amqxQueueObject = "queue"
     override val amqxTopicObject = "topic"
 }
