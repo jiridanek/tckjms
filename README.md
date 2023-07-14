@@ -93,7 +93,7 @@ The build will *not* fail if applying patch files partially fails.
 
 go to `core/` or `core20/` and run `ant`
 
-    cd build/jmstck/src/com/sun/ts/tests/jms/core
+    cd build/messaging-tck/src/com/sun/ts/tests/jms/core
     ret=0
     while [[ $ret == 0 ]]; do
         ant -Dtest.client=queuetests/QueueTests.java -Dtest=temporaryQueueNotConsumableTest_from_standalone runclient
