@@ -8,6 +8,10 @@ Helper Gradle scripts to run Jakarta JMS TCK with ActiveMQ.
 
     yum install patch
 
+Suitable broker must be installed and configured.
+The config depends on client used, see `buildSrc/main/kotlin/*.kt` files for what is expected.
+Namely, clients are configured to log-in as tckuser/tckuser, and access the broker using default port for each protocol.
+
 ## Gradle Essentials
 
 Read the minimal introduction to Gradle which will be written soon.
@@ -102,9 +106,6 @@ go to `core/` or `core20/` and run `ant`
 
 # TODO:
 
-* integrate into Dtests
-    * use --project-cache-dir --no-daemon --refresh-dependencies gradle options
-* missing package installation
-* getting log4j, slf4j-log4j when mvnrepository is not available
-    * how to switch to .redhat-1 version?
-* copy gradle to ooo and download from there, or artifactory (gradle is 85MiB)
+* CI optimizations
+  * cache the gradle install between runs
+  * use --project-cache-dir --no-daemon --refresh-dependencies gradle options
