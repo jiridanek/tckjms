@@ -22,64 +22,34 @@ T.configureRepositories = task("configureRepositories") {
         repositories {
             mavenCentral()
             when {
-                project.hasProperty("uberJar") -> Unit
-                project.hasProperty("upstream") -> Unit
-                project.hasProperty("local") -> mavenLocal()
+                project.hasProperty("maven-central") -> Unit // artifact is in maven central repository
+                project.hasProperty("local") -> mavenLocal() // enables local maven repository, useful for for SNAPSHOTs
+                project.hasProperty("uberJar") -> Unit // adds the jar file to classpath, see below
                 else -> {
                     if (!G.jmsClientVersion.contains("redhat")) {
                         throw InvalidUserDataException(
-                            "define jmsClientVersion with `redhat` in it or use `-PuberJar` or `-Pupstream`")
+                            "define jmsClientVersion with `redhat` in it or use `-Pmaven-central`, `-Plocal` or `-PuberJar`")
                     }
                     when {
-                        project.hasProperty("zip") -> flatDir {
-                            // this would work for A-MQ6 zip distribution, if we want to go this route
-                            dir(properties["distDir"] as String)
+                        project.hasProperty("flatDirs") -> flatDir {
+                            dirs((properties["flatDirs"] as String).split(";"))
                         }
-                        project.hasProperty("system") -> {
-                            maven {
-                                setUrl("file:///usr/share/java/maven-repo")
-                            }
-                        }
-                        project.hasProperty("release") -> {
-                            // see https://access.redhat.com/documentation/en/red-hat-jboss-a-mq/6.3/paged/client-connectivity-guide/chapter-1-introduction
-                            maven {
-                                // redhat-ga-repository
-                                setUrl("https://maven.repository.redhat.com/ga")
-                            }
-                            maven {
-                                // jboss-public
-                                setUrl("https://repository.jboss.org/nexus/content/groups/public")
-                            }
-                            // for A-MQ 6.2.1, see https://access.redhat.com/documentation/en-US/Red_Hat_JBoss_A-MQ/6.2/html/Client_Connectivity_Guide/Build-GenerateMaven.html
-                            maven {
-                                // fusesource
-                                setUrl("http://repo.fusesource.com/nexus/content/groups/public/")
-                                isAllowInsecureProtocol = true
+                        project.hasProperty("repoDirs") -> {
+                            for (repoDir in (properties["repoDirs"] as String).split(";")) {
+                                maven {
+                                    setUrl("file://$repoDir")
+                                }
                             }
                         }
-                        project.hasProperty("candidate") -> {
-                            maven {
-                                // redhat-ea-repository
-                                setUrl("https://maven.repository.redhat.com/earlyaccess/all")
-                            }
-                            maven {
-                                // jboss-staging
-                                setUrl("https://origin-repository.jboss.org/nexus/content/groups/m2-proxy/")
-                            }
-                            // for A-MQ 6.2.1
-                            maven {
-                                // fusesource.snapshot
-                                setUrl("http://repo.fusesource.com/nexus/content/groups/public-snapshots/")
-                                isAllowInsecureProtocol = true
+                        project.hasProperty("repoUrls") -> {
+                            for (aUrl in (project.property("repoUrls") as String).split(";")) {
+                                maven {
+                                    url = uri(aUrl)
+                                    isAllowInsecureProtocol = true
+                                }
                             }
                         }
-                        project.hasProperty("repo-path") -> {
-                            maven {
-                                url = uri(project.property("repo-path") as String)
-                                isAllowInsecureProtocol = true
-                            }
-                        }
-                        else -> throw InvalidUserDataException("define one of `-Pupstream`, `-Plocal`, `-Pzip`, `-Psystem`, `-Prelease`, `-Pcandidate`, `-Prepo-path")
+                        else -> throw InvalidUserDataException("define one of `-Pmaven-central`, `-Plocal`, `-PuberJar`, `-PflatDirs`, `-PrepoDirs`, `-PrepoUrls`")
                     }
                 }
             }

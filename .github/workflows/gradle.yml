@@ -34,7 +34,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: build
+        arguments: build --warning-mode all
 
   # Executes a single TCK test with qpid-jms against ActiveMQ Artemis to demonstrate the scripts work.
   # https://github.com/artemiscloud/activemq-artemis-broker-image
@@ -63,7 +63,7 @@ jobs:
     - name: Prepare and configure TCKs with Gradle (but don't run it all)
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: prepareTckTask --scan
+        arguments: prepareTckTask
 
     - name: Run a single TCK test
       run: |
