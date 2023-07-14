@@ -4,13 +4,17 @@ Helper Gradle scripts to run Jakarta JMS TCK with ActiveMQ.
 
 ## Prerequisites
 
-`patch` command needs to be installed
-
-    yum install patch
+### JMS broker
 
 Suitable broker must be installed and configured.
 The config depends on client used, see `buildSrc/main/kotlin/*.kt` files for what is expected.
 Namely, clients are configured to log-in as tckuser/tckuser, and access the broker using default port for each protocol.
+
+### patch command
+
+`patch` command needs to be installed
+
+    yum install patch
 
 ## Gradle Essentials
 
@@ -69,7 +73,7 @@ Which properties are required depends on the task. For example, properties `host
     * `activemq`  // ActiveMQ Classic
 
 * -PjmsClientVersion
-    * default is `+`, meaning latest upstream version, use something like `0.11.0.redhat-1`
+    * default is `+`, meaning latest available version
 
 * -Phost, optional
     * broker hostname (without port), default is `localhost`
@@ -77,14 +81,26 @@ Which properties are required depends on the task. For example, properties `host
 * -Pport, optional
     * broker port number, default depends on client, either `5672` or `61616`
 
-* <repository>
-  * -Pupstream
+* \<repository>
+  * `-Pmaven-central`
   * -Plocal
-    * maven local repository in `~/.m2/repository`
-  * -Psystem
-    * rpms installed to `file:///usr/share/java/maven-repo`
-  * -Prelease, -Pcandidate
-    * Red Hat public repositories for released versions
+    * enables locating jms client in maven local repository in `~/.m2/repository`
+  * `-PuberJar`
+    * adds this jar (with uberjar distribution of the client) to the classpath
+  * `-PflatDirs`, `-PrepoDirs`, `-PrepoUrls`,
+    * configures gradle to load a list of ; separated strings, pointing to
+      either load flat dir of jars,
+      or maven repositories on disk given by path (without `file://`),
+      or maven repositories given by their urls
+
+## Creating queues and topics
+
+There are helper tasks in `destinations.build.ks` that create necessary destinations on the topic.
+The AMQX tool available from https://github.com/rh-messaging/cli-java/tree/main/cli-activemq-jmx is used for this.
+
+Some JMS TCK tests do not require any destinations to be predeclared and will pass without doing this.
+
+If you don't want to use AMQX, create the destinations mentioned in the script manually using broker management tools.
 
 ## Return code
 
