@@ -27,9 +27,9 @@ Executing Gradle:
 
 run some TCKs (start broker first)
 
-    ./gradlew -PjmsVersion=2.0 -PjmsClient=mrgm -PjmsBroker=artem -Pupstream addDestinations
-    ./gradlew -PjmsVersion=2.0 -PjmsClient=mrgm -PjmsBroker=artem -Pupstream runTck
-    ./gradlew -PjmsVersion=2.0 -PjmsClient=mrgm -PjmsBroker=artem -Pupstream deleteDestinations
+    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pupstream addDestinations
+    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pupstream runTck
+    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pupstream deleteDestinations
 
 cleaning the build directory
 
@@ -60,14 +60,13 @@ Which properties are required depends on the task. For example, properties `host
     * `2.0`
 
 * -PjmsClient
-    * `mrgm`  // qpid-jms (AMQP)
-    * `owire` // activemq-client (OpenWire)
-    * `jamq` // artemis-jms-client (Core)
+    * `qpid-jms` // qpid-jms (AMQP)
+    * `activemq-client` // activemq-client (OpenWire)
+    * `artemis-jms-client` // artemis-jms-client (Core)
 
 * -PjmsBroker
-    * `artem`, `JAMQ7`  // Artemis or AMQ 7, for TCK test it does not matter which
-    * `JAMQ6`  // A-MQ6, should work for upstream too
-    * `MRGM`  // not supported, will throw error
+    * `activemq-artemis` // ActiveMQ Artemis
+    * `activemq`  // ActiveMQ Classic
 
 * -PjmsClientVersion
     * default is `+`, meaning latest upstream version, use something like `0.11.0.redhat-1`

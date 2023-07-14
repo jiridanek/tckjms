@@ -58,7 +58,7 @@ open class QpidJmsClient : Client() {
     }
 }
 
-class EnmasseQpidJmsClient : QpidJmsClient() {
+class AmqpsQpidJmsClient : QpidJmsClient() {
     override val protocol = "amqps"
     override val connectionFactory = "connectionFactory"  // qpid-jms accepts lowercase f, artemis does not
     val properties = "&transport.trustAll=true&transport.verifyHost=false"
