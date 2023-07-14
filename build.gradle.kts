@@ -163,12 +163,12 @@ tasks {
         doLast {
             val properties = getConfigurationProperties(broker = G.jmsBroker, client = G.jmsClient)
             copy {
-                from(resources.resolve("jndi.properties"))
+                from(resources.resolve("jndi.properties").mustExist())
                 into(jndiFileDir)
                 expand(properties)
             }
             copy {
-                from(resources.resolve("log4j.properties"))
+                from(resources.resolve("log4j.properties").mustExist())
                 into(jndiFileDir)
             }
         }
@@ -251,4 +251,12 @@ tasks {
 tasks.wrapper {
     distributionType = Wrapper.DistributionType.BIN
     gradleVersion = "latest"
+}
+
+// https://stackoverflow.com/questions/62889954/copy-task-doesnt-fail-or-log-when-source-file-is-missing
+fun File.mustExist(): File {
+    if (! this.exists()) {
+        throw GradleScriptException("File $this does not exist", Throwable())
+    }
+    return this
 }
