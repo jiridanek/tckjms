@@ -18,7 +18,8 @@ Namely, clients are configured to log-in as tckuser/tckuser, and access the brok
 
 ## Gradle Essentials
 
-Read the minimal introduction to Gradle which will be written soon.
+Good place to start with Gradle is the https://gradle.org/guides doc page.
+Read the "Building Java Applications" and "Migrating build logic from Groovy to Kotlin" guides.
 
 Executing Gradle:
 
@@ -31,9 +32,9 @@ Executing Gradle:
 
 run some TCKs (start broker first)
 
-    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pupstream addDestinations
-    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pupstream runTck
-    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pupstream deleteDestinations
+    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pmaven-central addDestinations
+    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pmaven-central runTck
+    ./gradlew -PjmsVersion=2.0 -PjmsClient=qpid-jms -PjmsBroker=activemq-artemis -Pmaven-central deleteDestinations
 
 cleaning the build directory
 
