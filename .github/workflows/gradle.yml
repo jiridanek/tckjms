@@ -36,12 +36,23 @@ jobs:
       with:
         arguments: build
 
+  # Executes a single TCK test with qpid-jms against ActiveMQ Artemis to demonstrate the scripts work.
+  # https://github.com/artemiscloud/activemq-artemis-broker-image
+  # https://github.com/apache/qpid-jms
   run-single:
 
     runs-on: ubuntu-latest
 
+    env:
+      artemis_image: quay.io/artemiscloud/activemq-artemis-broker:snapshot
+
     steps:
     - uses: actions/checkout@v3
+
+    - name: Start Artemis Broker in the background
+      run: |
+        podman pull ${{env.artemis_image}}
+        podman run -p 5672:5672 -e AMQ_USER=admin -e AMQ_PASSWORD=admin --rm -it ${{env.artemis_image}} &
 
     - name: Set up JDK 11
       uses: actions/setup-java@v3
@@ -49,7 +60,7 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: Prepare and configure TCKs with Gradle (but don't run it)
+    - name: Prepare and configure TCKs with Gradle (but don't run it all)
       uses: gradle/gradle-build-action@v2
       with:
         arguments: prepareTckTask
