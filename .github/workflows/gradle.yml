@@ -12,6 +12,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -23,12 +24,39 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
+
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
       with:
         arguments: build
+
+  run-single:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    - name: Prepare and configure TCKs with Gradle (but don't run it)
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: prepareTckTask
+
+    - name: Run a single TCK test
+      run: |
+        ant_bin=$PWD/build/apache-ant-1.10.12/bin/ant
+
+        cd build/messaging-tck/src/com/sun/ts/tests/jms/core
+        ${ant_bin} -Dtest.client=queuetests/QueueTests.java -Dtest=temporaryQueueNotConsumableTest_from_standalone runclient

@@ -230,8 +230,12 @@ tasks {
 
     // the main task
 
-    val runTckTask by registering {
+    val prepareTckTask by registering {
         dependsOn(fetchTckTask, patchTckTask, compileTckTask, unzipAntTask)
+    }
+
+    val runTckTask by registering {
+        dependsOn(prepareTckTask)
         doLast {
             exec {
                 executable(antLauncherScript)
