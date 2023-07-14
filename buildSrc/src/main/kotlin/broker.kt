@@ -16,7 +16,7 @@
  */
 
 abstract class Broker {
-    val user = "tckuser"  // user and password; Dtests creates that on the broker
+    val user = "tckuser"  // default user and password
     val pass = "tckuser"
     open val queue_prefix = ""
     open val topic_prefix = ""

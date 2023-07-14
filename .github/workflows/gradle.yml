@@ -52,7 +52,7 @@ jobs:
     - name: Start Artemis Broker in the background
       run: |
         podman pull ${{env.artemis_image}}
-        podman run -p 5672:5672 -e AMQ_USER=admin -e AMQ_PASSWORD=admin --rm -it ${{env.artemis_image}} &
+        podman run -p 5672:5672 -e AMQ_USER=tckuser -e AMQ_PASSWORD=tckuser --rm -it ${{env.artemis_image}} &
 
     - name: Set up JDK 11
       uses: actions/setup-java@v3
