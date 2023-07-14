@@ -1,0 +1,56 @@
+diff --git a/bin/ts.jte b/bin/ts.jte
+index 0e0da64..8731745 100644
+--- a/bin/ts.jte
++++ b/bin/ts.jte
+@@ -46,7 +46,11 @@
+ # Standalone JMS RI implementations. The JMS TCK has been run against both.
+ ####################################################################################
+ jms.home=
+-jms.classes=/home/jenkins/agent/workspace/jakartaee-tck_master/modules/jakarta.jms-api.jar:/home/jenkins/agent/workspace/jakartaee-tck_master/modules/glassfish-corba-omgapi.jar
++
++#### BEGIN changes ####
++#jms.classes=/home/jenkins/agent/workspace/jakartaee-tck_master/modules/jakarta.jms-api.jar:/home/jenkins/agent/workspace/jakartaee-tck_master/modules/glassfish-corba-omgapi.jar
++jms.classes=@client_libs@
++#### END changes ####
+
+ ####################################################################################
+ # The jars/classes for the TS harness/javatest and the test classes
+@@ -108,8 +112,14 @@ harness.log.traceflag=false
+ harness.log.delayseconds=1
+ harness.executeMode=2
+ harness.socket.retry.count=10
+-work.dir=/tmp/JTwork
+-report.dir=/tmp/JTreport
++
++#### BEGIN changes ####
++#work.dir=/tmp/JTwork
++#report.dir=/tmp/JTreport
++work.dir=@jmstck@/JTwork
++report.dir=@jmstck@/JTreport
++#### BEGIN changes ####
++
+ if.existing.work.report.dirs=auto
+
+ ###########################################################################
+@@ -198,8 +208,8 @@ porting.ts.jmsObjects.class.1=com.sun.ts.lib.implementation.sun.jms.SunRIJMSObje
+ #These properties are needed for the JMS tests.
+ ###############################################################
+ jms_timeout=10000
+-user=j2ee
+-password=j2ee
++user=@user@
++password=@password@
+
+ ######################################################################
+ ## Deliverables must set this property to the name of the deliverable
+@@ -232,7 +242,10 @@ platform.mode=standalone
+ #		or the Open Message Queue Product (impl.vi=ri).
+ #######################################################################################
+
++#### BEGIN changes ####
++#impl.vi=ri
+ impl.vi=ri
++#### END changes ####
+
+ # ---------------------------------------------------------------------------------
+ # ================================================
